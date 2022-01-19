@@ -14,7 +14,6 @@ public class Player : MonoBehaviour
     private int _jumps;
     private bool _previouslyGrounded = false;
 
-
     // Start is called before the first frame update
     void Start()
     {
@@ -54,7 +53,7 @@ public class Player : MonoBehaviour
         if (ShouldResetJumps()) _jumps = maxJumps;
         if (_jumps == 0) return;
 
-        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space)) {    
+        if (Input.GetKeyDown(KeyCode.UpArrow)) {    
             Vector2 jump = new Vector2(_body.velocity.x, jumpForce);    
             _body.velocity = jump;
             _jumps -= 1;
