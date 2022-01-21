@@ -5,6 +5,7 @@ using UnityEngine;
 public class Weapon : MonoBehaviour
 {
     private Animator _animator;
+    private Enemy enemy;
 
     // Start is called before the first frame update
     void Start()
@@ -19,8 +20,21 @@ public class Weapon : MonoBehaviour
     }
 
     private void Attack() {
-        if (Input.GetKeyDown(KeyCode.Space)) {    
-            _animator.Play("Sword_Swing");
+        if (Input.GetKeyDown(KeyCode.Space)) {   
+            if (Input.GetKey(KeyCode.LeftArrow)) {
+                _animator.Play("Attack_Left");
+            } else {
+                _animator.Play("Attack_Right");
+            }
+                
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "Enemy")
+        {
+            other.gameObject.GetComponent<Enemy>().TakeDamage();
         }
     }
 }
