@@ -5,7 +5,9 @@ using UnityEngine;
 public class Weapon : MonoBehaviour
 {
     private Animator _animator;
-    private Enemy enemy;
+    private string attackState;
+    // Prevents case where 1 attack can hit enemies twice
+    private List<Enemy> enemiesHitOnAttack = new List<Enemy>();
 
     // Start is called before the first frame update
     void Start()
@@ -22,11 +24,19 @@ public class Weapon : MonoBehaviour
     private void Attack() {
         if (Input.GetKeyDown(KeyCode.Space)) {   
             if (Input.GetKey(KeyCode.LeftArrow)) {
-                _animator.Play("Attack_Left");
+                attackState = "Attack_Left";
             } else {
-                _animator.Play("Attack_Right");
+                attackState = "Attack_Right";
             }
-                
+            _animator.Play(attackState);
+        }
+    }
+
+    private void UpdateAttackState() {
+        if (attackState != "Idle" && _animator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+        {
+            attackState = "Idle";
+            enemiesHitOnAttack.Clear();
         }
     }
 
@@ -34,7 +44,10 @@ public class Weapon : MonoBehaviour
     {
         if (other.gameObject.tag == "Enemy")
         {
-            other.gameObject.GetComponent<Enemy>().TakeDamage();
+            Enemy enemy = other.gameObject.GetComponent<Enemy>();
+            if (!enemiesHitOnAttack.Contains(enemy)) {
+                enemy.TakeDamage(attackState);
+            }
         }
     }
 }

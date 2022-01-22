@@ -20,6 +20,7 @@ public class Player : MonoBehaviour
         _collider = GetComponent<BoxCollider2D>();
         _body = GetComponent<Rigidbody2D>();  
         _jumps = 0; 
+        Physics2D.IgnoreCollision(_collider, GameObject.Find("Enemy").GetComponent<Collider2D>());
     }
 
     // Update is called once per frame
@@ -35,7 +36,7 @@ public class Player : MonoBehaviour
         Vector2 corner1 = new Vector2(max.x, min.y - .1f);    
         Vector2 corner2 = new Vector2(min.x, min.y - .2f);    
         Collider2D hit = Physics2D.OverlapArea(corner1, corner2);
-        bool grounded = hit != null;
+        bool grounded = hit != null && hit.gameObject.tag == "Ground";
 
         // The jumps should only reset when the player was not previously grounded
         if (grounded && _previouslyGrounded) return false;
