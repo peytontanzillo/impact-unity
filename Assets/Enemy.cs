@@ -24,10 +24,10 @@ public class Enemy : Character
     IEnumerator AttackCycle() 
     {
         Weapon weapon = GetWeapon();
-        WaitForSeconds wait = new WaitForSeconds(1.2F);
+        WaitForSeconds wait = new WaitForSeconds(5F);
  
         while (true) {
-            weapon.Attack("Attack_Front");
+            weapon.Attack(moveset.GetAttack(AttackDirection.UP));
             yield return wait;
         }
     } 

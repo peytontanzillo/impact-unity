@@ -2,20 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Attack : MonoBehaviour
+public class Attack
 {
-    public float verticalForce = 10.0f;
-    public float horizontalForce = 10.0f;
-    public float damageDone = 2.0f;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public string animation;
+    public float damage;
+    public Vector2 knockback;
+    public Attack(string animation, float damage, Vector2 knockback) {
+        this.animation = animation;
+        this.damage = damage;
+        this.knockback = knockback;
     }
 }

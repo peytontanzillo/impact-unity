@@ -65,8 +65,7 @@ public class Player : Character
     }
 
     private void HandleSpriteDirection() {
-        if ((speed < 0 && this.transform.localScale.x < 0) || (speed > 0 && this.transform.localScale.x > 0)) {
-            Weapon weapon = GetWeapon();
+        if ((speed < 0 && this.transform.localScale.x > 0) || (speed > 0 && this.transform.localScale.x < 0)) {
             if (!weapon.IsAttacking()) {
                 this.transform.localScale = new Vector2(-transform.localScale.x, transform.localScale.y);
             }
@@ -86,11 +85,16 @@ public class Player : Character
 
     private void PlayerAttack(bool isBackwards) {
         if (Input.GetKeyDown(KeyCode.Space)) { 
-            Weapon weapon = GetWeapon();
-            if ((Input.GetKey(KeyCode.RightArrow) && !isBackwards) || (Input.GetKey(KeyCode.LeftArrow) && isBackwards)) {
-                weapon.Attack("Attack_Back");
+            if (Input.GetKey(KeyCode.UpArrow)) {
+                weapon.Attack(moveset.GetAttack(AttackDirection.UP), isBackwards);
+            } else if (Input.GetKey(KeyCode.DownArrow)) {
+                weapon.Attack(moveset.GetAttack(AttackDirection.DOWN), isBackwards);
+            } else if ((Input.GetKey(KeyCode.RightArrow) && !isBackwards) || (Input.GetKey(KeyCode.LeftArrow) && isBackwards)) {
+                weapon.Attack(moveset.GetAttack(AttackDirection.FRONT), isBackwards);
+            } else if ((Input.GetKey(KeyCode.RightArrow) && isBackwards) || (Input.GetKey(KeyCode.LeftArrow) && !isBackwards)) {
+                weapon.Attack(moveset.GetAttack(AttackDirection.BACK), isBackwards);
             } else {
-                weapon.Attack("Attack_Front");
+                weapon.Attack(moveset.GetAttack(AttackDirection.NEUTRAL), isBackwards);
             }
         }
     }

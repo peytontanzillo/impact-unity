@@ -5,8 +5,9 @@ using UnityEngine;
 public class Weapon : MonoBehaviour
 {
     private Animator _animator;
-    private string attackState;
+    private Attack currentAttack;
     // Prevents case where 1 attack can hit enemies twice
+    private bool isBackwards = false;
     private List<Character> charactersHit = new List<Character>();
     Character belongsTo;
 
@@ -19,24 +20,25 @@ public class Weapon : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        UpdateAttackState();
+        UpdateCurrentAttack();
     }
 
-    public void Attack( string attack ) {
-        attackState = attack;
-        _animator.Play(attackState);
+    public void Attack( Attack attack, bool isBackwards = false) {
+        currentAttack = attack;
+        this.isBackwards = isBackwards;
+        _animator.Play(currentAttack.animation);
     }
 
-    private void UpdateAttackState() {
-        if (attackState != "Idle" && _animator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+    private void UpdateCurrentAttack() {
+        if (currentAttack != null && _animator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
         {
-            attackState = "Idle";
+            currentAttack = null;
             charactersHit.Clear();
         }
     }
 
     public bool IsAttacking() {
-        return attackState != "Idle";
+        return currentAttack != null;
     }
 
     public void SetBelongsTo(Character character) {
@@ -47,7 +49,7 @@ public class Weapon : MonoBehaviour
     {
         Character character = other.gameObject.GetComponent<Character>();
         if (character != null && character != belongsTo && !charactersHit.Contains(character)) { 
-            character.TakeDamage(attackState, other.gameObject);
+            character.TakeDamage(currentAttack, other.gameObject, isBackwards);
         }
     }
 }
