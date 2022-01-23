@@ -4,47 +4,35 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class Enemy : MonoBehaviour
+public class Enemy : Character
 {
-    public float weight = 50.0f;
-    public float verticalForce = 10.0f;
-    public float horizontalForce = 10.0f;
-
-
-    float _percentage = 0.0F;
-    Text textObject;
     private Rigidbody2D _body;
+
     // Start is called before the first frame update
-    void Start()
+    new void Start()
     {
-        _body = GetComponent<Rigidbody2D>();  
-        textObject = GameObject.Find("Enemy Health").GetComponent<Text>();
+        base.Start();
+        StartCoroutine(AttackCycle());
+        _body = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
     }
 
-    public void TakeDamage(string attackState) {
-        SetPercentage(_percentage + 5.0F);
-        float xForce = horizontalForce * (1 / weight) * _percentage;
-        float yForce = verticalForce * (1 / weight) * _percentage;
-
-        switch (attackState) {
-            case "Attack_Right":
-                _body.velocity = new Vector2(xForce, yForce);
-                break;
-            case "Attack_Left":
-                _body.velocity = new Vector2(-1 * xForce, yForce);
-                break;
+    IEnumerator AttackCycle() 
+    {
+        Weapon weapon = GetWeapon();
+        WaitForSeconds wait = new WaitForSeconds(1.2F);
+ 
+        while (true) {
+            weapon.Attack("Attack_Front");
+            yield return wait;
         }
+    } 
 
-    }
-
-    public void SetPercentage(float percentage) {
-        _percentage = percentage;
-        textObject.text = _percentage + "%";
+    public override void AddDamageKnockback(Vector2 vector) {
+        _body.velocity += vector;
     }
 }

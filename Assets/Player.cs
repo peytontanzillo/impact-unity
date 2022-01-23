@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : Character
 {
     public float jumpForce = 6.0f;
-    public float speed = 2000.0f;
     public int maxJumps = 2;
-
+    public float maxSpeed = 10; //This is the maximum speed that the object will achieve
+    public float acceleration = 10;//How fast will object reach a maximum speed
+    public float deceleration = 10;//How fast will object reach a speed of 0
+    private float speed = 0;//Don't touch this
     private Rigidbody2D _body;
     private BoxCollider2D _collider;
     
@@ -15,10 +17,11 @@ public class Player : MonoBehaviour
     private bool _previouslyGrounded = false;
 
     // Start is called before the first frame update
-    void Start()
+    new void Start()
     {
+        base.Start();
         _collider = GetComponent<BoxCollider2D>();
-        _body = GetComponent<Rigidbody2D>();  
+        _body = GetComponent<Rigidbody2D>();
         _jumps = 0; 
         Physics2D.IgnoreCollision(_collider, GameObject.Find("Enemy").GetComponent<Collider2D>());
     }
@@ -28,6 +31,7 @@ public class Player : MonoBehaviour
     {
         HorizontalMovement();
         Jump();
+        PlayerAttack(this.transform.localScale.x < 0);
     }
 
     private bool ShouldResetJumps() {
@@ -45,9 +49,28 @@ public class Player : MonoBehaviour
     }
 
     private void HorizontalMovement() {
-        float deltaX = Input.GetAxis("Horizontal") * speed * Time.deltaTime;
-        Vector2 movement = new Vector2(deltaX, _body.velocity.y);    
-        _body.velocity = movement;
+        if ((Input.GetKey(KeyCode.LeftArrow)) && (speed > -maxSpeed)) {
+            speed -= acceleration * Time.deltaTime;
+        } else if ((Input.GetKey(KeyCode.RightArrow)) && (speed < maxSpeed)) {
+            speed += acceleration * Time.deltaTime;
+        } else if(speed > deceleration * Time.deltaTime) {
+            speed -= deceleration * Time.deltaTime;
+        } else if(speed < -deceleration * Time.deltaTime) {
+            speed += deceleration * Time.deltaTime;
+        } else {
+            speed = 0;
+        }
+        HandleSpriteDirection();
+        _body.velocity = new Vector2(speed, _body.velocity.y);
+    }
+
+    private void HandleSpriteDirection() {
+        if ((speed < 0 && this.transform.localScale.x < 0) || (speed > 0 && this.transform.localScale.x > 0)) {
+            Weapon weapon = GetWeapon();
+            if (!weapon.IsAttacking()) {
+                this.transform.localScale = new Vector2(-transform.localScale.x, transform.localScale.y);
+            }
+        }
     }
 
     private void Jump() {
@@ -59,5 +82,21 @@ public class Player : MonoBehaviour
             _body.velocity = jump;
             _jumps -= 1;
         }
+    }
+
+    private void PlayerAttack(bool isBackwards) {
+        if (Input.GetKeyDown(KeyCode.Space)) { 
+            Weapon weapon = GetWeapon();
+            if ((Input.GetKey(KeyCode.RightArrow) && !isBackwards) || (Input.GetKey(KeyCode.LeftArrow) && isBackwards)) {
+                weapon.Attack("Attack_Back");
+            } else {
+                weapon.Attack("Attack_Front");
+            }
+        }
+    }
+
+    public override void AddDamageKnockback(Vector2 vector) {
+        _body.velocity += vector;
+        speed += vector.x;
     }
 }

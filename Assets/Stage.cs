@@ -18,11 +18,12 @@ public class Stage : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        other.gameObject.transform.position = new Vector2(0, 0);
-        other.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
-        if (other.gameObject.tag == "Enemy")
+        Character character = other.gameObject.GetComponent<Character>();
+        if (character != null)
         {
-            other.gameObject.GetComponent<Enemy>().SetPercentage(0.0F);
+            character.SetPercentage(0.0F);
+            other.gameObject.transform.position = new Vector2(0, 0);
+            other.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
         }
     }
 }

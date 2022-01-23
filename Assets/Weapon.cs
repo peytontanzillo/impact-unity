@@ -7,7 +7,8 @@ public class Weapon : MonoBehaviour
     private Animator _animator;
     private string attackState;
     // Prevents case where 1 attack can hit enemies twice
-    private List<Enemy> enemiesHitOnAttack = new List<Enemy>();
+    private List<Character> charactersHit = new List<Character>();
+    Character belongsTo;
 
     // Start is called before the first frame update
     void Start()
@@ -18,36 +19,35 @@ public class Weapon : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Attack();
+        UpdateAttackState();
     }
 
-    private void Attack() {
-        if (Input.GetKeyDown(KeyCode.Space)) {   
-            if (Input.GetKey(KeyCode.LeftArrow)) {
-                attackState = "Attack_Left";
-            } else {
-                attackState = "Attack_Right";
-            }
-            _animator.Play(attackState);
-        }
+    public void Attack( string attack ) {
+        attackState = attack;
+        _animator.Play(attackState);
     }
 
     private void UpdateAttackState() {
         if (attackState != "Idle" && _animator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
         {
             attackState = "Idle";
-            enemiesHitOnAttack.Clear();
+            charactersHit.Clear();
         }
+    }
+
+    public bool IsAttacking() {
+        return attackState != "Idle";
+    }
+
+    public void SetBelongsTo(Character character) {
+        belongsTo = character;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Enemy")
-        {
-            Enemy enemy = other.gameObject.GetComponent<Enemy>();
-            if (!enemiesHitOnAttack.Contains(enemy)) {
-                enemy.TakeDamage(attackState);
-            }
+        Character character = other.gameObject.GetComponent<Character>();
+        if (character != null && character != belongsTo && !charactersHit.Contains(character)) { 
+            character.TakeDamage(attackState, other.gameObject);
         }
     }
 }
