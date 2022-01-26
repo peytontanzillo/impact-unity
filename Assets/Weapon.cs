@@ -10,46 +10,42 @@ public class Weapon : MonoBehaviour
     private bool isBackwards = false;
     private List<Character> charactersHit = new List<Character>();
     Character belongsTo;
+    private bool hasLoaded = false;
 
     // Start is called before the first frame update
     void Start()
     {
+        belongsTo = transform.parent.GetComponent<Character>();
         _animator = GetComponent<Animator>();
+        hasLoaded = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        UpdateCurrentAttack();
+        //UpdateCurrentAttack();
     }
 
-    public void Attack( Attack attack, bool isBackwards = false) {
+    public void Attack( MeleeAttack attack, bool isBackwards = false) {
         currentAttack = attack;
         this.isBackwards = isBackwards;
-        _animator.Play(currentAttack.animation);
+        attack.ExecuteAttack(_animator);
     }
 
-    private void UpdateCurrentAttack() {
-        if (currentAttack != null && _animator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
-        {
-            currentAttack = null;
-            charactersHit.Clear();
-        }
+    public void FinishAttack() {
+        currentAttack = null;
     }
 
     public bool IsAttacking() {
         return currentAttack != null;
     }
 
-    public void SetBelongsTo(Character character) {
-        belongsTo = character;
-    }
-
     private void OnTriggerEnter2D(Collider2D other)
     {
         Character character = other.gameObject.GetComponent<Character>();
-        if (character != null && character != belongsTo && !charactersHit.Contains(character)) { 
-            character.TakeDamage(currentAttack, other.gameObject, isBackwards);
+        if (character != null && character != belongsTo && !charactersHit.Contains(character) && hasLoaded) { 
+            print("take dmg from here");
+            character.TakeDamage(currentAttack, isBackwards);
         }
     }
 }

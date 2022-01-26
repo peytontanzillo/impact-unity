@@ -23,6 +23,7 @@ public class Player : Character
         _collider = GetComponent<BoxCollider2D>();
         _body = GetComponent<Rigidbody2D>();
         _jumps = 0; 
+        LoadState();
         Physics2D.IgnoreCollision(_collider, GameObject.Find("Enemy").GetComponent<Collider2D>());
     }
 
@@ -85,22 +86,52 @@ public class Player : Character
 
     private void PlayerAttack(bool isBackwards) {
         if (Input.GetKeyDown(KeyCode.Space)) { 
-            if (Input.GetKey(KeyCode.UpArrow)) {
-                weapon.Attack(moveset.GetAttack(AttackDirection.UP), isBackwards);
-            } else if (Input.GetKey(KeyCode.DownArrow)) {
-                weapon.Attack(moveset.GetAttack(AttackDirection.DOWN), isBackwards);
-            } else if ((Input.GetKey(KeyCode.RightArrow) && !isBackwards) || (Input.GetKey(KeyCode.LeftArrow) && isBackwards)) {
-                weapon.Attack(moveset.GetAttack(AttackDirection.FRONT), isBackwards);
-            } else if ((Input.GetKey(KeyCode.RightArrow) && isBackwards) || (Input.GetKey(KeyCode.LeftArrow) && !isBackwards)) {
-                weapon.Attack(moveset.GetAttack(AttackDirection.BACK), isBackwards);
-            } else {
-                weapon.Attack(moveset.GetAttack(AttackDirection.NEUTRAL), isBackwards);
+            Attack attack = GetUsedAttack(isBackwards);
+            switch (attack) {
+                case MeleeAttack meleeAttack:
+                    weapon.Attack(meleeAttack, isBackwards);
+                    break;
+                case ProjectileAttack projectileAttack:
+                    projectileAttack.ExecuteAttack(this, isBackwards);
+                    break;
             }
+        }
+    }
+
+    private Attack GetUsedAttack(bool isBackwards) {
+        if (Input.GetKey(KeyCode.UpArrow)) {
+            return moveset.GetAttack(AttackDirection.UP);
+        } else if (Input.GetKey(KeyCode.DownArrow)) {
+            return moveset.GetAttack(AttackDirection.DOWN);
+        } else if ((Input.GetKey(KeyCode.RightArrow) && !isBackwards) || (Input.GetKey(KeyCode.LeftArrow) && isBackwards)) {
+            return moveset.GetAttack(AttackDirection.FRONT);
+        } else if ((Input.GetKey(KeyCode.RightArrow) && isBackwards) || (Input.GetKey(KeyCode.LeftArrow) && !isBackwards)) {
+            return moveset.GetAttack(AttackDirection.BACK);
+        } else {
+            return moveset.GetAttack(AttackDirection.NEUTRAL);
         }
     }
 
     public override void AddDamageKnockback(Vector2 vector) {
         _body.velocity += vector;
         speed += vector.x;
+    }
+
+    private void LoadState() {
+        speed = PlayerState.speed;
+        _body.velocity = PlayerState.velocity;
+        if (PlayerState.localScale.x != 0 || PlayerState.localScale.y != 0) { this.transform.localScale = PlayerState.localScale; }
+    }
+
+    public float GetSpeed() {
+        return speed;
+    }
+
+    public Vector2 GetVelocity() {
+        return _body.velocity;
+    }
+
+    public Vector2 GetLocalScale() {
+        return this.transform.localScale;
     }
 }

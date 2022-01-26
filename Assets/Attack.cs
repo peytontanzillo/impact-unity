@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Attack
+public abstract class Attack
 {
     public string animation;
     public float damage;

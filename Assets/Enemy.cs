@@ -7,6 +7,10 @@ using UnityEngine.UI;
 public class Enemy : Character
 {
     private Rigidbody2D _body;
+    public float attackTime = 5F;
+    public AttackDirection attackDirection = AttackDirection.NEUTRAL;
+    Attack attack;
+
 
     // Start is called before the first frame update
     new void Start()
@@ -14,6 +18,7 @@ public class Enemy : Character
         base.Start();
         StartCoroutine(AttackCycle());
         _body = GetComponent<Rigidbody2D>();
+        attack = moveset.GetAttack(attackDirection);
     }
 
     // Update is called once per frame
@@ -23,11 +28,17 @@ public class Enemy : Character
 
     IEnumerator AttackCycle() 
     {
-        Weapon weapon = GetWeapon();
-        WaitForSeconds wait = new WaitForSeconds(5F);
+        WaitForSeconds wait = new WaitForSeconds(attackTime);
  
         while (true) {
-            weapon.Attack(moveset.GetAttack(AttackDirection.UP));
+            switch(attack) {
+                case MeleeAttack meleeAttack:
+                    weapon.Attack(meleeAttack, true);
+                    break;
+                case ProjectileAttack projectileAttack:
+                    projectileAttack.ExecuteAttack(this, true);
+                    break; 
+            }
             yield return wait;
         }
     } 

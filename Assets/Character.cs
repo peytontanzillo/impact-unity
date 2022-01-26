@@ -5,13 +5,13 @@ using UnityEngine.UI;
 
 public abstract class Character : MonoBehaviour
 {
-    public Text textObject;
-    //public DefaultMoveset moveset;
+    public string textObjectName;
     public float weight = 50.0f;
     public float percentage = 0.0F;
     protected Weapon weapon;
     public MovesetType movesetType;
     protected Moveset moveset;
+    private Text textObject;
 
 
 
@@ -19,14 +19,15 @@ public abstract class Character : MonoBehaviour
     public void Start()
     {
         weapon = this.transform.GetComponentInChildren<Weapon>();
-        weapon.SetBelongsTo(this);
         moveset = Movesets.GetMoveset(movesetType);
+        textObject = GameObject.Find(textObjectName).GetComponent<Text>();
     }
 
-    public void TakeDamage(Attack attack, GameObject gameObject, bool isAttackerBackwards)
+    public void TakeDamage(Attack attack, bool invertVectorX)
     {
+        if (attack == null) { return; }
         SetPercentage(percentage + attack.damage);
-        float xForce = attack.knockback.x * (1 / weight) * percentage * (isAttackerBackwards ? -1 : 1);
+        float xForce = attack.knockback.x * (1 / weight) * percentage * (invertVectorX ? -1 : 1);
         float yForce = attack.knockback.y * (1 / weight) * percentage;
 
         Vector2 damageVector = new Vector2(xForce, yForce);
