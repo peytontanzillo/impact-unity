@@ -7,7 +7,7 @@ public abstract class Character : MonoBehaviour
 {
     public string textObjectName;
     public float weight = 50.0f;
-    public float percentage = 0.0F;
+    protected float percentage = 0.0f;
     protected Weapon weapon;
     public MovesetType movesetType;
     protected Moveset moveset;
@@ -36,7 +36,7 @@ public abstract class Character : MonoBehaviour
 
     public abstract void AddDamageKnockback(Vector2 vector);
 
-    public void SetPercentage(float pct) {
+    public virtual void SetPercentage(float pct) {
         percentage = pct;
         textObject.text = System.Math.Round(percentage, 1) + "%";
     }

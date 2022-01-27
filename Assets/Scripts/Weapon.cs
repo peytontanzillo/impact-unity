@@ -44,7 +44,6 @@ public class Weapon : MonoBehaviour
     {
         Character character = other.gameObject.GetComponent<Character>();
         if (character != null && character != belongsTo && !charactersHit.Contains(character) && hasLoaded) { 
-            print("take dmg from here");
             character.TakeDamage(currentAttack, isBackwards);
         }
     }

@@ -237,6 +237,7 @@ MonoBehaviour:
   maxSpeed: 12
   acceleration: 30
   deceleration: 30
+  icon: {fileID: 7482667652216324306, guid: 88f1f6c874c1d4d3ca84e49276ecd909, type: 3}
 --- !u!1001 &5035627130918171
 PrefabInstance:
   m_ObjectHideFlags: 0

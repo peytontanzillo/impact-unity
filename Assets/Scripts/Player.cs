@@ -9,6 +9,7 @@ public class Player : Character
     public float maxSpeed = 10; //This is the maximum speed that the object will achieve
     public float acceleration = 10;//How fast will object reach a maximum speed
     public float deceleration = 10;//How fast will object reach a speed of 0
+    public Sprite icon;
     private float speed = 0;//Don't touch this
     private Rigidbody2D _body;
     private BoxCollider2D _collider;
@@ -52,8 +53,10 @@ public class Player : Character
     private void HorizontalMovement() {
         if ((Input.GetKey(KeyCode.LeftArrow)) && (speed > -maxSpeed)) {
             speed -= acceleration * Time.deltaTime;
+            HandleSpriteDirection();
         } else if ((Input.GetKey(KeyCode.RightArrow)) && (speed < maxSpeed)) {
             speed += acceleration * Time.deltaTime;
+            HandleSpriteDirection();
         } else if(speed > deceleration * Time.deltaTime) {
             speed -= deceleration * Time.deltaTime;
         } else if(speed < -deceleration * Time.deltaTime) {
@@ -61,7 +64,6 @@ public class Player : Character
         } else {
             speed = 0;
         }
-        HandleSpriteDirection();
         _body.velocity = new Vector2(speed, _body.velocity.y);
     }
 
@@ -121,6 +123,7 @@ public class Player : Character
         speed = PlayerState.speed;
         _body.velocity = PlayerState.velocity;
         if (PlayerState.localScale.x != 0 || PlayerState.localScale.y != 0) { this.transform.localScale = PlayerState.localScale; }
+        base.SetPercentage(PlayerState.percentage);
     }
 
     public float GetSpeed() {
@@ -133,5 +136,10 @@ public class Player : Character
 
     public Vector2 GetLocalScale() {
         return this.transform.localScale;
+    }
+
+    public override void SetPercentage(float pct) {
+        GameObject.Find("Stage Boundary").GetComponent<Stage>().SetSelectorPercentage(pct);
+        base.SetPercentage(pct);
     }
 }

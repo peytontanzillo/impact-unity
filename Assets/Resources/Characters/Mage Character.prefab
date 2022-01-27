@@ -12,6 +12,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5035627394894346, guid: ed8dd048a0f6f4105be30cf38da32980, type: 3}
+      propertyPath: icon
+      value: 
+      objectReference: {fileID: 21300000, guid: 991a61f5740e947399282c9317f6202b, type: 3}
+    - target: {fileID: 5035627394894346, guid: ed8dd048a0f6f4105be30cf38da32980, type: 3}
       propertyPath: textObject
       value: 
       objectReference: {fileID: 0}

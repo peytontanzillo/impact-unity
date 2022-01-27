@@ -198,6 +198,8 @@ MonoBehaviour:
   characterNameList:
   - Sword Character
   - Mage Character
+  - Test Sword Character
+  - Test Mage Character
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
