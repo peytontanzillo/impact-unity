@@ -230,8 +230,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textObjectName: Player Health
   weight: 50
-  percentage: 0
-  movesetType: 1
+  movesetType: 2
   jumpForce: 6
   maxJumps: 2
   maxSpeed: 12

@@ -23,7 +23,6 @@ public class Weapon : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //UpdateCurrentAttack();
     }
 
     public void Attack( MeleeAttack attack, bool isBackwards = false) {
@@ -34,6 +33,7 @@ public class Weapon : MonoBehaviour
 
     public void FinishAttack() {
         currentAttack = null;
+        charactersHit.Clear();
     }
 
     public bool IsAttacking() {
@@ -45,6 +45,7 @@ public class Weapon : MonoBehaviour
         Character character = other.gameObject.GetComponent<Character>();
         if (character != null && character != belongsTo && !charactersHit.Contains(character) && hasLoaded) { 
             character.TakeDamage(currentAttack, isBackwards);
+            charactersHit.Add(character);
         }
     }
 }

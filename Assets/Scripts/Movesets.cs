@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum AttackDirection { FRONT, BACK, UP, DOWN, NEUTRAL };
 
-public enum MovesetType { SWORD, MAGE };
+public enum MovesetType { SWORD, MAGE, BOMBER };
 
 public class Moveset
 {
@@ -40,8 +40,16 @@ public static class Movesets {
         mageMoveset.AddAttack(AttackDirection.BACK, new MeleeAttack("Attack_Back", 1.2F, new Vector2(8.0F, 0.0F)));
         mageMoveset.AddAttack(AttackDirection.UP, new MeleeAttack("Attack_Up", 3.1F, new Vector2(0.0F, 15.0F)));
         mageMoveset.AddAttack(AttackDirection.DOWN, new MeleeAttack("Attack_Down", .5F, new Vector2(7.0F, 3.0F)));
-        mageMoveset.AddAttack(AttackDirection.NEUTRAL, new ProjectileAttack(null, 3F, new Vector2(7.0F, 7.0F), "Projectile", 8.0F));
+        mageMoveset.AddAttack(AttackDirection.NEUTRAL, new ProjectileAttack(null, 3F, new Vector2(7.0F, 7.0F), "Projectile"));
         movesets.Add(MovesetType.MAGE, mageMoveset);
+
+        Moveset bomberMoveset = new Moveset();
+        bomberMoveset.AddAttack(AttackDirection.FRONT, new MeleeAttack("Attack_Front", 2.0F, new Vector2(10.0F, 10.0F)));
+        bomberMoveset.AddAttack(AttackDirection.BACK, new MeleeAttack("Attack_Back", 1.2F, new Vector2(8.0F, 0.0F)));
+        bomberMoveset.AddAttack(AttackDirection.UP, new MeleeAttack("Attack_Up", 3.1F, new Vector2(0.0F, 15.0F)));
+        bomberMoveset.AddAttack(AttackDirection.DOWN, new MeleeAttack("Attack_Down", .5F, new Vector2(7.0F, 3.0F)));
+        bomberMoveset.AddAttack(AttackDirection.NEUTRAL, new ProjectileAttack(null, 3F, new Vector2(7.0F, 7.0F), "Bomb", "Explosion"));
+        movesets.Add(MovesetType.BOMBER, bomberMoveset);
     }
 
 }
