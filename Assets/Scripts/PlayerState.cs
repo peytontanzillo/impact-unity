@@ -9,7 +9,7 @@ public static class PlayerState {
     public static Vector2 localScale = new Vector2(0, 0);
     public static float percentage = 0.0F;
 
-    public static void SetPlayerInit(Player player, float pct) {
+    public static void SetPlayerInit(PlatPlayer player, float pct) {
         speed = player.GetSpeed();
         velocity = player.GetVelocity();
         localScale = player.GetLocalScale();

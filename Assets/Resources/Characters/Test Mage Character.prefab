@@ -225,7 +225,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2749351702361159538}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1ee8ea2a6e3f4ed195f1a4105c8913d, type: 3}
+  m_Script: {fileID: 11500000, guid: 8d8fc70e8914c44fba123a6a5c659a08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   textObjectName: Player Health
@@ -233,9 +233,9 @@ MonoBehaviour:
   movesetType: 2
   jumpForce: 6
   maxJumps: 2
-  maxSpeed: 12
-  acceleration: 30
-  deceleration: 30
+  maxSpeed: 10
+  acceleration: 10
+  deceleration: 10
   icon: {fileID: 21300000, guid: c1c6ac04b2f3c434493cc93b09acdd9f, type: 3}
 --- !u!1 &4875372608002831310
 GameObject:

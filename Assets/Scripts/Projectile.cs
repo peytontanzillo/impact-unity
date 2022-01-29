@@ -5,7 +5,7 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
 
-    Character firedFrom;
+    PlatCharacter firedFrom;
     ProjectileAttack projectileAttack;
     bool isBackwards;
     #nullable enable
@@ -15,7 +15,7 @@ public class Projectile : MonoBehaviour
     public float launchHeight = 0.0F;
 
 
-    public void Attack(Character firedFrom, ProjectileAttack projectileAttack, bool isBackwards, string explosionPath) {
+    public void Attack(PlatCharacter firedFrom, ProjectileAttack projectileAttack, bool isBackwards, string explosionPath) {
         this.firedFrom = firedFrom;
         this.projectileAttack = projectileAttack;
         this.isBackwards = isBackwards;
@@ -25,7 +25,7 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Character character = other.gameObject.GetComponent<Character>();
+        PlatCharacter character = other.gameObject.GetComponent<PlatCharacter>();
         if (character != null && character != firedFrom) { 
             Destroy(gameObject);
             if (explosion != null) {

@@ -37,7 +37,7 @@ public class Stage : MonoBehaviour
         for (int i = 0; i < characterTemplates.Count; i++) {
             currentPlayerIndex = i;
             CreatePlayerObject(new Vector2(0, 0));
-            Sprite playerIcon = player.GetComponent<Player>().icon;
+            Sprite playerIcon = player.GetComponent<PlatPlayer>().icon;
             Destroy(player);
             GameObject selector = Instantiate(Resources.Load("Character Selector") as GameObject, new Vector2(i * 80 + 40, 390), Quaternion.identity);
             selector.transform.SetParent(GameObject.Find("Canvas").transform);
@@ -79,7 +79,7 @@ public class Stage : MonoBehaviour
             if (Input.GetKeyDown(controlList[i])) {
                 isSwitchingCharacters = true;
                 Vector2 playerLoc = player.transform.position;
-                PlayerState.SetPlayerInit(player.GetComponent<Player>(), characterTemplates[i].percentage);
+                PlayerState.SetPlayerInit(player.GetComponent<PlatPlayer>(), characterTemplates[i].percentage);
                 Destroy(player);
                 SetSelectorSelected(characterTemplates[currentPlayerIndex].selectorTransform, false);
                 currentPlayerIndex = i;
@@ -96,7 +96,7 @@ public class Stage : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        Character character = other.gameObject.GetComponent<Character>();
+        PlatCharacter character = other.gameObject.GetComponent<PlatCharacter>();
         if (character != null)
         {
             if (isSwitchingCharacters) {

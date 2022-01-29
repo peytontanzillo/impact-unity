@@ -12,7 +12,7 @@ public class ProjectileAttack : Attack
         this.explosionPath = explosionPath;
     }
 
-    public void ExecuteAttack(Character character, bool isBackwards) {
+    public void ExecuteAttack(PlatCharacter character, bool isBackwards) {
         GameObject gameObject = Object.Instantiate(Resources.Load(projectilePath) as GameObject, character.gameObject.transform.position, Quaternion.identity);
         Projectile projectile = gameObject.GetComponent<Projectile>();
         projectile.Attack(character, this, isBackwards, explosionPath);

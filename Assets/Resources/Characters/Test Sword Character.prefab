@@ -143,18 +143,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 4479590451790663289}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1ee8ea2a6e3f4ed195f1a4105c8913d, type: 3}
+  m_Script: {fileID: 11500000, guid: 8d8fc70e8914c44fba123a6a5c659a08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   textObjectName: Player Health
   weight: 50
-  percentage: 0
   movesetType: 0
   jumpForce: 6
   maxJumps: 2
-  maxSpeed: 12
-  acceleration: 30
-  deceleration: 30
+  maxSpeed: 10
+  acceleration: 10
+  deceleration: 10
   icon: {fileID: 21300000, guid: d02471e92bd8a4ce2b625b0d5dc4bf0d, type: 3}
 --- !u!1 &4479590452579123065
 GameObject:

@@ -7,7 +7,7 @@ public class Explosion : MonoBehaviour
     public float damage = 6.9F;
     public Vector2 knockback = new Vector2(0, 0);
     public float duration = 1.0F;
-    private List<Character> charactersHit = new List<Character>();
+    private List<PlatCharacter> charactersHit = new List<PlatCharacter>();
     // Start is called before the first frame update
     void Start()
     {
@@ -29,7 +29,7 @@ public class Explosion : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Character character = other.gameObject.GetComponent<Character>();
+        PlatCharacter character = other.gameObject.GetComponent<PlatCharacter>();
         if (character != null && !charactersHit.Contains(character)) { 
             character.TakeDamage(new ExplosionAttack(damage, knockback), false);
             charactersHit.Add(character);

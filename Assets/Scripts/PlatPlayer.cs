@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : Character
+public class PlatPlayer : PlatCharacter
 {
     public float jumpForce = 6.0f;
     public int maxJumps = 2;

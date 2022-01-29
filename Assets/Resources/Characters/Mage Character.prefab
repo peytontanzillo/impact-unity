@@ -91,5 +91,32 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5035627394894346, guid: ed8dd048a0f6f4105be30cf38da32980, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: ed8dd048a0f6f4105be30cf38da32980, type: 3}
+--- !u!1 &6366397074744027077 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5035627394894357, guid: ed8dd048a0f6f4105be30cf38da32980, type: 3}
+  m_PrefabInstance: {fileID: 6361369146750152144}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3330034840376847312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6366397074744027077}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d8fc70e8914c44fba123a6a5c659a08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textObjectName: Player Health
+  weight: 50
+  movesetType: 1
+  jumpForce: 6
+  maxJumps: 2
+  maxSpeed: 10
+  acceleration: 10
+  deceleration: 10
+  icon: {fileID: 21300000, guid: 991a61f5740e947399282c9317f6202b, type: 3}

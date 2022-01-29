@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public abstract class Character : MonoBehaviour
+public abstract class PlatCharacter : MonoBehaviour
 {
     public string textObjectName;
     public float weight = 50.0f;

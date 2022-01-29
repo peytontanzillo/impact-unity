@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class Enemy : Character
+public class PlatEnemy : PlatCharacter
 {
     private Rigidbody2D _body;
     public float attackTime = 5F;

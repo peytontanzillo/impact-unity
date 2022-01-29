@@ -142,15 +142,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 5037517576486949736}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 030c125e2611a4c8896911555aa833ac, type: 3}
+  m_Script: {fileID: 11500000, guid: f044453269da245b39518bf5a83b2a0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   textObjectName: Enemy Health
   weight: 50
-  percentage: 0
   movesetType: 1
-  attackTime: 1
-  attackDirection: 0
+  attackTime: 3
+  attackDirection: 4
 --- !u!1001 &5037517576749603347
 PrefabInstance:
   m_ObjectHideFlags: 0
