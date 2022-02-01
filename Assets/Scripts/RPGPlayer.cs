@@ -5,29 +5,65 @@ using UnityEngine;
 
 public class RPGPlayer : MonoBehaviour
 {
+    public Sprite upSprite, downSprite, leftSprite, rightSprite = null;
+    private class DirectionData {
+        public Vector2 direction;
+        public Sprite sprite;
+        public DirectionData(Vector2 direction, Sprite sprite) {
+            this.direction = direction;
+            this.sprite = sprite;
+        }
+    }
     private Rigidbody2D body;
+    private SpriteRenderer spriteRenderer;
     public float moveSpeed = 10.0F;
-    private Dictionary<KeyCode, Vector2> directions = new Dictionary<KeyCode, Vector2>(){ 
-        { KeyCode.UpArrow, new Vector2(0, 1) },
-        { KeyCode.DownArrow, new Vector2(0, -1) },
-        { KeyCode.RightArrow, new Vector2(1, 0) },
-        { KeyCode.LeftArrow, new Vector2(-1, 0) },
-    };
+    public NPC talkingTo;
+
+    private DirectionData directionData;
+    private Dictionary<KeyCode, DirectionData> directions = new Dictionary<KeyCode, DirectionData>();
     // Start is called before the first frame update
     void Start()
     {
         body = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        directions.Add(KeyCode.UpArrow, new DirectionData(new Vector2(0, 1), upSprite));
+        directions.Add(KeyCode.DownArrow, new DirectionData(new Vector2(0, -1), downSprite));
+        directions.Add(KeyCode.RightArrow, new DirectionData(new Vector2(1, 0), rightSprite));
+        directions.Add(KeyCode.LeftArrow, new DirectionData(new Vector2(-1, 0), leftSprite));
     }
 
     // Update is called once per frame
     void Update()
     {
-        body.velocity = SetPlayerVelocity();
+        SetPlayerVelocity();
+        NPCInteract();
     }
 
-    Vector2 SetPlayerVelocity() {
+    void SetPlayerVelocity() {
         KeyCode[] heldDirections = directions.Keys.Where(dxn => Input.GetKey(dxn)).ToArray();
-        if (heldDirections.Count() != 1) { return new Vector2(0, 0); }
-        return directions[heldDirections[0]] * new Vector2(moveSpeed, moveSpeed);
+        if (talkingTo != null || heldDirections.Count() != 1) { 
+            body.velocity = new Vector2(0, 0);
+            return; 
+        }
+        directionData = directions[heldDirections[0]];
+        body.velocity = directionData.direction * new Vector2(moveSpeed, moveSpeed);
+        spriteRenderer.sprite = directionData.sprite;
+    }
+
+    void NPCInteract() {
+        if (Input.GetKeyDown(KeyCode.Space)) {
+            if (talkingTo) {
+                talkingTo.ContinueConversation();
+            } else {
+                RaycastHit2D hit = Physics2D.Raycast(transform.position, directionData.direction, 3.0F);
+                if (hit.collider != null) {
+                    NPC npc = hit.collider.GetComponent<NPC>();
+                    if (npc != null) {
+                        talkingTo = npc;
+                        npc.StartConversation(this);
+                    }
+                }
+            }
+        }
     }
 }
