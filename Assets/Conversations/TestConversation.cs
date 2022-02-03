@@ -1,12 +1,13 @@
 public class TestConversation : Conversation {
-
-    public TestConversation() : base() {}
+    public TestConversation() {
+        id = "TEST";
+    }
     public override DialogPage ConversationStart() {
-        start = new DialogPage("Hello World!");
-        DialogPage node = start.SetNext(new DialogPage("I am a cohesive, multi-page conversation!"));
-        node = node.SetNext(new DialogPage("Look at me go! Aren't I cool?"));
-        node = node.SetNext(new DialogPage("No?"));
-        node = node.SetNext(new DialogPage("Well, you're not cool >:("));
+        StandardPage start = new StandardPage("Hello World!");
+        StandardPage node = start.SetNextStandard(new StandardPage("I am a cohesive, multi-page conversation!"));
+        node = node.SetNextStandard(new StandardPage("Look at me go! Aren't I cool?"));
+        node = node.SetNextStandard(new StandardPage("No?"));
+        node = node.SetNextStandard(new StandardPage("Well, you're not cool >:("));
         return start;
     }
 

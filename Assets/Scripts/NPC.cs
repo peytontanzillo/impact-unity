@@ -29,7 +29,11 @@ public class NPC : MonoBehaviour
 
     public void ContinueConversation() {
         dialog.NextPage();
-        if (dialog.isFinished()) {
+        DialogPage pg = dialog.GetPage();
+        if (pg == null) {
+            EndConversation();
+        } else if (pg is DialogEnd) {
+            conversation = ((DialogEnd) pg).nextConversation;
             EndConversation();
         }
     }

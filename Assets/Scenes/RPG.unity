@@ -207,7 +207,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
   m_Color: {r: 0, g: 1, b: 0.91761637, a: 1}
   m_FlipX: 0
@@ -245,7 +245,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75641056539634a199682ac6b76202c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  conversation: TEST
+  conversation: APPLES_ORANGES
 --- !u!1 &223613574
 GameObject:
   m_ObjectHideFlags: 0
@@ -33377,7 +33377,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
   m_Color: {r: 0.55822396, g: 0.24292453, b: 0.9716981, a: 1}
   m_FlipX: 0
