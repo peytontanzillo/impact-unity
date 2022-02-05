@@ -8,12 +8,23 @@ public class NPC : MonoBehaviour
     RPGPlayer conversationWith;
     GameObject dialogBox;
     Dialog dialog;
+    public Dictionary<DialogMood, Sprite> moods = new Dictionary<DialogMood, Sprite>();
+
+    [System.Serializable]
+    public struct Mood {
+        public DialogMood mood;
+        public Sprite sprite;
+    }
+    public Mood[] moodList;
 
     public string conversation;
     // Start is called before the first frame update
     void Start()
     {
-        
+        foreach (Mood mood in moodList) {
+            moods.Add(mood.mood, mood.sprite);
+        }
+        if (!GlobalState.conversations.ContainsKey(gameObject.name)) { GlobalState.conversations.Add(gameObject.name, conversation); }
     }
 
     // Update is called once per frame
@@ -33,7 +44,7 @@ public class NPC : MonoBehaviour
         if (pg == null) {
             EndConversation();
         } else if (pg is DialogEnd) {
-            conversation = ((DialogEnd) pg).nextConversation;
+            GlobalState.conversations[gameObject.name] = ((DialogEnd) pg).nextConversation;
             EndConversation();
         }
     }
@@ -44,7 +55,7 @@ public class NPC : MonoBehaviour
             dialogBox = Instantiate(Resources.Load("Dialog Box") as GameObject, new Vector2(510, 60), Quaternion.identity);
             dialogBox.transform.SetParent(GameObject.Find("Canvas").transform);
             dialog = dialogBox.GetComponent<Dialog>();
-            dialog.StartDialog(dialogBox.transform.Find("Panel").Find("Text").GetComponent<Text>(), ConversationManager.GetConversationStart(conversation));
+            dialog.StartDialog(this);
         }
     }
 }

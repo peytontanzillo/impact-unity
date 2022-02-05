@@ -4,8 +4,8 @@ public class AlreadyTalkedConversation : Conversation {
         id = "ALREADY_TALKED";
     }
     public override DialogPage ConversationStart() {
-        StandardPage start = new StandardPage("We\'ve already talked, so I'm saying something different.");
-        start.SetNextStandard(new StandardPage("Goodbye."));
+        StandardPage start = new StandardPage("We\'ve already talked, so I'm saying something different.", DialogMood.Neutral);
+        start.SetNextStandard(new StandardPage("Goodbye.", DialogMood.Neutral));
         return start;
     }
 

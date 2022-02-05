@@ -20,7 +20,6 @@ public abstract class PlatCharacter : MonoBehaviour
     {
         weapon = this.transform.GetComponentInChildren<Weapon>();
         moveset = Movesets.GetMoveset(movesetType);
-        textObject = GameObject.Find(textObjectName).GetComponent<Text>();
     }
 
     public void TakeDamage(Attack attack, bool invertVectorX)
@@ -38,6 +37,7 @@ public abstract class PlatCharacter : MonoBehaviour
 
     public virtual void SetPercentage(float pct) {
         percentage = pct;
+        if (textObject == null) { textObject = GameObject.Find(textObjectName).GetComponent<Text>(); }
         textObject.text = System.Math.Round(percentage, 1) + "%";
     }
 

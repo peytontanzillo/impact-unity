@@ -2,14 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public abstract class DialogPage {
+public enum DialogMood {
+    Neutral, Happy, Sad, Angry
+}
 
+public abstract class DialogPage {
+    public DialogMood mood;
 }
 public class StandardPage : DialogPage {
     public string text;
     public DialogPage next = null;
-    public StandardPage(string text) {
+    public StandardPage(string text, DialogMood mood) {
         this.text = text;
+        this.mood = mood;
     }
     public StandardPage SetNextStandard(StandardPage next) {
         this.next = next;
@@ -36,6 +41,10 @@ public class PlayerOption : DialogPage {
             this.next = next;
         }
     }
+
+    public PlayerOption(DialogMood mood) {
+        this.mood = mood;
+    }
     private List<DialogOption> options = new List<DialogOption>();
 
     public void AddOption(string text, DialogPage next) {
@@ -60,6 +69,7 @@ public class DialogEnd : DialogPage {
 
     public DialogEnd(string nextConversation) {
         this.nextConversation = nextConversation;
+        this.mood = DialogMood.Neutral;
     }
 
 }

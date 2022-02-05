@@ -2,16 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
-
-public class Stage : MonoBehaviour
-{
-
-    private class CharacterTemplate {
+public class CharacterTemplate {
         public GameObject template;
         public Transform selectorTransform;
         public float percentage = 0.0F;
     }
+public class Stage : MonoBehaviour
+{
     GameObject player;
     public List<string> characterNameList;
     List<CharacterTemplate> characterTemplates = new List<CharacterTemplate>();
@@ -24,7 +23,9 @@ public class Stage : MonoBehaviour
     {
         PopulateCharacterTemplates();
         CreateCharacterSelectors();
+        ResetPlayerState();
         CreatePlayerObject(new Vector2(0, 0));
+        //player.GetComponent<PlatPlayer>().SetPercentage(GlobalState.party[currentPlayerIndex].percentage);
     }
 
     // Update is called once per frame
@@ -34,7 +35,7 @@ public class Stage : MonoBehaviour
     }
 
     void CreateCharacterSelectors() {
-        for (int i = 0; i < characterTemplates.Count; i++) {
+        for (int i = 0; i < GlobalState.party.Count; i++) {
             currentPlayerIndex = i;
             CreatePlayerObject(new Vector2(0, 0));
             Sprite playerIcon = player.GetComponent<PlatPlayer>().icon;
@@ -44,17 +45,23 @@ public class Stage : MonoBehaviour
             Transform panelTransform = selector.transform.Find("Panel");
             panelTransform.Find("Number").GetComponent<Text>().text = (i + 1).ToString();
             panelTransform.Find("Icon").GetComponent<Image>().sprite = playerIcon;
-            panelTransform.Find("Percentage").GetComponent<Text>().text = 0.0F + "%";
+            panelTransform.Find("Percentage").GetComponent<Text>().text = GlobalState.party[i].percentage + "%";
 
             SetSelectorSelected(panelTransform, i == 0);
 
-            characterTemplates[i].selectorTransform = panelTransform;
+            GlobalState.party[i].selectorTransform = panelTransform;
         }
         currentPlayerIndex = 0;
     }
 
     void CreatePlayerObject(Vector2 loc) {
-        player = Instantiate(characterTemplates[currentPlayerIndex].template, loc, Quaternion.identity) as GameObject;
+        player = Instantiate(GlobalState.party[currentPlayerIndex].template, loc, Quaternion.identity) as GameObject;
+    }
+
+    void ResetPlayerState() {
+        CreatePlayerObject(new Vector2(0, 0));
+        PlayerState.SetPlayerInit(player.GetComponent<PlatPlayer>(), GlobalState.party[currentPlayerIndex].percentage);
+        Destroy(player);
     }
 
     void SetSelectorSelected(Transform selectorTransform, bool isSelected) {
@@ -66,32 +73,34 @@ public class Stage : MonoBehaviour
     }
 
     void PopulateCharacterTemplates() {
+        // Return if already populated
+        if (GlobalState.party.Count > 0) { return; }
         foreach (string charName in characterNameList) {
             CharacterTemplate template = new CharacterTemplate();
             template.template = Resources.Load("Characters/" + charName) as GameObject;
-            characterTemplates.Add(template);
+            GlobalState.party.Add(template);
         }
     }
 
     void SwitchCharacter() {
-        for (int i = 0; i < characterTemplates.Count; i++) {
+        for (int i = 0; i < GlobalState.party.Count; i++) {
             if (i == currentPlayerIndex) { continue; }
             if (Input.GetKeyDown(controlList[i])) {
                 isSwitchingCharacters = true;
                 Vector2 playerLoc = player.transform.position;
-                PlayerState.SetPlayerInit(player.GetComponent<PlatPlayer>(), characterTemplates[i].percentage);
+                PlayerState.SetPlayerInit(player.GetComponent<PlatPlayer>(), GlobalState.party[i].percentage);
                 Destroy(player);
-                SetSelectorSelected(characterTemplates[currentPlayerIndex].selectorTransform, false);
+                SetSelectorSelected(GlobalState.party[currentPlayerIndex].selectorTransform, false);
                 currentPlayerIndex = i;
                 CreatePlayerObject(playerLoc);
-                SetSelectorSelected(characterTemplates[currentPlayerIndex].selectorTransform, true);
+                SetSelectorSelected(GlobalState.party[currentPlayerIndex].selectorTransform, true);
             }
         }
     }
 
     public void SetSelectorPercentage(float pct) {
-        characterTemplates[currentPlayerIndex].percentage = pct;
-        characterTemplates[currentPlayerIndex].selectorTransform.Find("Percentage").GetComponent<Text>().text = pct + "%";
+        GlobalState.party[currentPlayerIndex].percentage = pct;
+        GlobalState.party[currentPlayerIndex].selectorTransform.Find("Percentage").GetComponent<Text>().text = pct + "%";
     }
 
     private void OnTriggerExit2D(Collider2D other)
@@ -102,6 +111,7 @@ public class Stage : MonoBehaviour
             if (isSwitchingCharacters) {
                 isSwitchingCharacters = false;
             } else {
+                SceneManager.LoadScene("RPG");
                 character.SetPercentage(0.0F);
                 other.gameObject.transform.position = new Vector2(0, 0);
                 other.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);

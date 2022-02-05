@@ -131,6 +131,7 @@ public class PlatPlayer : PlatCharacter
     }
 
     public Vector2 GetVelocity() {
+        if (_body == null) { return new Vector2(0, 0); }
         return _body.velocity;
     }
 

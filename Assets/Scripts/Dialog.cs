@@ -7,7 +7,9 @@ using UnityEngine.UI;
 public class Dialog : MonoBehaviour
 {
     Text textObject;
+    Image imageObject;
     DialogPage page;
+    NPC npc;
     int selectedIndex = 0;
     // Start is called before the first frame update
     void Start()
@@ -27,9 +29,11 @@ public class Dialog : MonoBehaviour
         }
     }
 
-    public void StartDialog(Text textObject, DialogPage page) {
-        this.textObject = textObject;
-        this.page = page;
+    public void StartDialog(NPC npc) {
+        this.npc = npc;
+        this.textObject = transform.Find("Panel").Find("Text").GetComponent<Text>();
+        this.imageObject = transform.Find("Panel").Find("Image").GetComponent<Image>();
+        this.page = ConversationManager.GetConversationStart(GlobalState.conversations[npc.gameObject.name]);
         UpdateDialogDisplay();
     }
 
@@ -56,6 +60,7 @@ public class Dialog : MonoBehaviour
                     textObject.text = GetPlayerOptionText(po);
                     break;
             }
+            imageObject.sprite = npc.moods[page.mood];
         }
     }
 

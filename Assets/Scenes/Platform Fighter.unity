@@ -802,8 +802,12 @@ PrefabInstance:
       value: Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 5037517576486949737, guid: 02ec90bc4ce18479ba2160fd4b68e55e, type: 3}
+      propertyPath: attackTime
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5037517576486949737, guid: 02ec90bc4ce18479ba2160fd4b68e55e, type: 3}
       propertyPath: movesetType
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5037517576486949737, guid: 02ec90bc4ce18479ba2160fd4b68e55e, type: 3}
       propertyPath: attackDirection
