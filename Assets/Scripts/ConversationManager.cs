@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,12 @@ public class StandardPage : DialogPage {
         this.next = next;
         return next;
     }
+
+    public ConditionalPage SetNextConditionalPage(ConditionalPage next) {
+        this.next = next;
+        return next;
+    }
+
 
     public void SetNextConversation(string nextConversation) {
         this.next = new DialogEnd(nextConversation);
@@ -74,6 +81,24 @@ public class DialogEnd : DialogPage {
 
 }
 
+public class ConditionalPage : DialogPage {
+
+    Func<string> ConditionFunction;
+    Dictionary<string, DialogPage> conditionPages = new Dictionary<string, DialogPage>();
+    public ConditionalPage(Func<string> ConditionFunction) {
+        this.ConditionFunction = ConditionFunction;
+    }
+
+    public void AddCondition(string key, DialogPage page) {
+        conditionPages.Add(key, page);
+    }
+
+    public DialogPage GetNext() {
+        return conditionPages[ConditionFunction()];
+    }
+
+}
+
 public abstract class Conversation {
     protected string id;
     public abstract DialogPage ConversationStart();
@@ -91,7 +116,8 @@ public static class ConversationManager {
                 new TestConversation(),
                 new TestConversation2(),
                 new AlreadyTalkedConversation(),
-                new ApplesOrangesConversation()
+                new ApplesOrangesConversation(),
+                new ConditionalTestConversation()
             };
 
             foreach (Conversation conversation in conversationList) {

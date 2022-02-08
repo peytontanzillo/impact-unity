@@ -45,9 +45,16 @@ public class Dialog : MonoBehaviour
             case PlayerOption po:
                 this.page = po.GetNextAtIndex(selectedIndex);
                 break;
+            case ConditionalPage cp:
+                this.page = cp.GetNext();
+                break;
         }
-        selectedIndex = 0;
-        UpdateDialogDisplay();
+        if (this.page is ConditionalPage) {
+            NextPage();
+        } else {
+            selectedIndex = 0;
+            UpdateDialogDisplay();
+        }
     }
 
     void UpdateDialogDisplay() {
