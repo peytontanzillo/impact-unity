@@ -111,7 +111,7 @@ public class Stage : MonoBehaviour
             if (isSwitchingCharacters) {
                 isSwitchingCharacters = false;
             } else {
-                SceneManager.LoadScene("RPG");
+                SceneManager.LoadScene(GlobalState.currentRoom);
                 character.SetPercentage(0.0F);
                 other.gameObject.transform.position = new Vector2(0, 0);
                 other.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
